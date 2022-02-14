@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SourceSample
 {
@@ -10,7 +11,7 @@ namespace SourceSample
             string compareStr = sourceString.ToLower();
 
             Stack<char> sourceStack = FillStack(compareStr);
-            Stack<char> compareStack = FillStackInversed(compareStr);            
+            Stack<char> compareStack = FillStackInversed(compareStr);
 
             do
             {
@@ -21,6 +22,63 @@ namespace SourceSample
                 //result = char1 == char2;
             }
             while (result && sourceStack.Count > 0);
+
+            return result;
+        }
+
+        public static KeyValuePair<T2, T1> GetFromDictionary<T1, T2>(Queue<T1> sourceQueue, Stack<T2> sourceStack, int index)
+        {
+            T2 resultKey;
+            T1 resultValue;
+
+            Dictionary<T2, T1> dictionary = FillDictionary(sourceQueue, sourceStack);
+
+            //result = dictionary.ElementAt(index);
+
+            resultKey = dictionary.Keys.ToArray()[index];
+            resultValue = dictionary.Values.ToArray()[index];
+
+            KeyValuePair<T2, T1> result = new KeyValuePair<T2, T1>(resultKey, resultValue);
+
+            return result;
+        }
+
+        private static Dictionary<T2, T1> FillDictionary<T2, T1>(Queue<T1> sourceQueue, Stack<T2> sourceStack)
+        {
+            Dictionary<T2, T1> result = new Dictionary<T2, T1>();
+
+            if (sourceQueue.Count <= sourceStack.Count)
+            {
+                while (sourceQueue.Count > 0)
+                {
+                    try
+                    {
+                        result.Add(sourceStack.Pop(), sourceQueue.Dequeue());
+                    }
+                    catch (System.Exception)
+                    {
+                        sourceQueue.Dequeue();
+                        sourceStack.Pop();
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                while (sourceQueue.Count > 0)
+                {
+                    try
+                    {
+                        result.Add(sourceStack.Pop(), sourceQueue.Dequeue());
+                    }
+                    catch (System.Exception)
+                    {
+                        sourceQueue.Dequeue();
+                        sourceStack.Pop();
+                        continue;
+                    }
+                }
+            }
 
             return result;
         }
