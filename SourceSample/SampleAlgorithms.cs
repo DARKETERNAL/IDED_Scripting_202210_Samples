@@ -46,6 +46,7 @@ namespace SourceSample
         private static Dictionary<T2, T1> FillDictionary<T2, T1>(Queue<T1> sourceQueue, Stack<T2> sourceStack)
         {
             Dictionary<T2, T1> result = new Dictionary<T2, T1>();
+            //result.Count = 0
 
             if (sourceQueue.Count <= sourceStack.Count)
             {
@@ -65,7 +66,7 @@ namespace SourceSample
             }
             else
             {
-                while (sourceQueue.Count > 0)
+                while (sourceStack.Count > 0)
                 {
                     try
                     {
