@@ -95,6 +95,9 @@ public class Character // Nouns
 
     public void PermformSkill(Skill target)
     {
-        // Perform target skill
+        if (target is HealSkill)
+        {
+            HP += (int)target.EffectValue;
+        }
     }
 }
