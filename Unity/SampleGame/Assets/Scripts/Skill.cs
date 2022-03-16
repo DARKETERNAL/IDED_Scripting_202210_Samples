@@ -51,21 +51,25 @@ public abstract class SupportSkill : Skill
 
 public class DefuffSkill : SupportSkill
 {
+    public EParameterType ParameterType { get; protected set; }
+
     public float EffectChance { get; protected set; }
 
     public override float EffectValue
     {
         get => base.EffectValue;
-        protected set => base.EffectValue = Math.Max(Math.Abs(value), 0.75F);
+        protected set => base.EffectValue = Math.Min(Math.Abs(value), 0.75F);
     }
 
     public DefuffSkill() : base()
     {
+        ParameterType = EParameterType.ATK;
         EffectChance = 1F;
     }
 
-    public DefuffSkill(string name, float effectValue, float effectChance) : base(name, effectValue)
+    public DefuffSkill(string name, float effectValue, EParameterType parameterType, float effectChance) : base(name, effectValue)
     {
+        ParameterType = parameterType;
         EffectChance = Math.Abs(effectChance);
     }
 }
@@ -75,7 +79,7 @@ public class HealSkill : SupportSkill
     public override float EffectValue
     {
         get => base.EffectValue;
-        protected set => base.EffectValue = Math.Min(1F, (float)Math.Round(value));
+        protected set => base.EffectValue = Math.Max(1F, (float)Math.Round(value));
     }
 
     public HealSkill()

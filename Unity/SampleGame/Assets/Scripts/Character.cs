@@ -1,3 +1,6 @@
+using System;
+
+[Serializable]
 public class Character // Nouns
 {
     private int baseHp; // Adjectives
@@ -5,32 +8,34 @@ public class Character // Nouns
     private float baseDef;
     private float baseSpec;
 
-    private float atkFactor = 1F;
-    private float defFactor = 1F;
-    private float specFactor = 1F;
+    private float atkFactor = 0F;
+    private float defFactor = 0F;
+    private float specFactor = 0F;
+
+    private Character target;
 
     public int HP
     {
         get => baseHp;
-        set => baseHp = value;
+        private set => baseHp = value;
     }
 
     public float Atk
     {
-        get => baseAtk * atkFactor;
-        set => baseAtk = value;
+        get => baseAtk * (1 + atkFactor);
+        private set => baseAtk = value;
     }
 
     public float Def
     {
-        get => baseDef * defFactor;
-        set => baseDef = value;
+        get => baseDef * (1 + defFactor);
+        private set => baseDef = value;
     }
 
     public float Spec
     {
-        get => baseSpec * specFactor;
-        set => baseSpec = value;
+        get => baseSpec * (1 + specFactor);
+        private set => baseSpec = value;
     }
 
     public string Name { get; private set; }
@@ -38,66 +43,110 @@ public class Character // Nouns
     public Character()
     {
         Name = "Char000";
+        HP = 0;
         Atk = 0F;
         Def = 0F;
         Spec = 0F;
     }
 
-    public Character(string name, float atk, float def, float spec)
+    public Character(string name, int hp, float atk, float def, float spec)
     {
         Name = name;
+        HP = hp;
         Atk = atk;
         Def = def;
         Spec = spec;
     }
 
-    public void PerformAttack(Character target) // Actions
+    public void ApplyDamage(int delta)
     {
-        // Attack target character
+        ModifyHP(-delta);
+    }
+
+    public void ApplyHeal(int delta)
+    {
+        ModifyHP(delta);
+    }
+
+    public void ModifyParamFactor(EParameterType parameterType, float paramValue)
+    {
+        switch (parameterType)
+        {
+            case EParameterType.ATK:
+                atkFactor = paramValue;
+                break;
+
+            case EParameterType.DEF:
+                defFactor = paramValue;
+                break;
+
+            case EParameterType.SPEC:
+                specFactor = paramValue;
+                break;
+        }
+    }
+
+    public void AssignTargetCharacter(Character character)
+    {
+        target = character;
+    }
+
+    public void PerformAttack() // Actions
+    {
+        target.ApplyDamage((int)Atk);
     }
 
     public void BlockAttack()
     {
     }
 
-    public void UseItem(Item target) // implicit cast
+    public void UseItem(Item item) // implicit cast
     {
-        if (target is HealthItem)
+        if (item is HealthItem)
         {
-            HP += (int)target.EffectValue; // explicit cast
+            //HP += (int)item.EffectValue; // explicit cast
+            ApplyHeal((int)item.EffectValue);
         }
-        else if (target is BuffItem)
+        else if (item is BuffItem)
         {
-            BuffItem targetBuffItem = target as BuffItem; // explicit cast
+            ModifyParamFactor((item as BuffItem).TargetParameter, item.EffectValue);
 
-            if (targetBuffItem != null)
+            // Same as above
+
+            //BuffItem buffItem = item as BuffItem; // explicit cast
+
+            //if (buffItem != null)
+            //{
+            //    ModifyParamFactor(buffItem.TargetParameter, buffItem.EffectValue);
+            //}
+        }
+    }
+
+    public void PermformSkill(Skill skill)
+    {
+        if (skill is HealSkill)
+        {
+            HP += (int)skill.EffectValue;
+        }
+        else if (skill is AttackSkill)
+        {
+            target.ApplyDamage((int)skill.EffectValue);
+        }
+        else if (skill is DefuffSkill)
+        {
+            DefuffSkill defuffSkill = skill as DefuffSkill;
+
+            float rollValue = (float)new Random(DateTime.Now.Millisecond).NextDouble();
+
+            if (rollValue <= defuffSkill.EffectChance)
             {
-                switch (targetBuffItem.TargetParameter)
-                {
-                    case EParameterType.ATK:
-                        atkFactor = targetBuffItem.EffectValue;
-                        break;
-
-                    case EParameterType.DEF:
-                        defFactor = targetBuffItem.EffectValue;
-                        break;
-
-                    case EParameterType.SPEC:
-                        specFactor = targetBuffItem.EffectValue;
-                        break;
-
-                    default:
-                        break;
-                }
+                target.ModifyParamFactor(defuffSkill.ParameterType, defuffSkill.EffectValue);
             }
         }
     }
 
-    public void PermformSkill(Skill target)
+    private void ModifyHP(int delta)
     {
-        if (target is HealSkill)
-        {
-            HP += (int)target.EffectValue;
-        }
+        HP += delta;
     }
 }
