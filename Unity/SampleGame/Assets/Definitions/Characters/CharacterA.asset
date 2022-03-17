@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CharacterA
   m_EditorClassIdentifier: 
   name: Char001
-  atk: 0
-  def: 0
-  spec: 0
+  hp: 60
+  atk: 5
+  def: 1
+  spec: 4

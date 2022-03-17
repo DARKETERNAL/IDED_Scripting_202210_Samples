@@ -126,15 +126,17 @@ public class Character // Nouns
     {
         if (skill is HealSkill)
         {
-            HP += (int)skill.EffectValue;
+            ApplyHeal((int)skill.EffectValue);
         }
         else if (skill is AttackSkill)
         {
             target.ApplyDamage((int)skill.EffectValue);
+            
+            //target.ModifyHP(-(int)skill.EffectValue);
         }
-        else if (skill is DefuffSkill)
+        else if (skill is DebuffSkill)
         {
-            DefuffSkill defuffSkill = skill as DefuffSkill;
+            DebuffSkill defuffSkill = skill as DebuffSkill;
 
             float rollValue = (float)new Random(DateTime.Now.Millisecond).NextDouble();
 

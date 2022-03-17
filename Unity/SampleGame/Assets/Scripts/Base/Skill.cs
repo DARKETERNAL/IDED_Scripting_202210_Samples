@@ -49,7 +49,7 @@ public abstract class SupportSkill : Skill
     }
 }
 
-public class DefuffSkill : SupportSkill
+public class DebuffSkill : SupportSkill
 {
     public EParameterType ParameterType { get; protected set; }
 
@@ -61,13 +61,13 @@ public class DefuffSkill : SupportSkill
         protected set => base.EffectValue = Math.Min(Math.Abs(value), 0.75F);
     }
 
-    public DefuffSkill() : base()
+    public DebuffSkill() : base()
     {
         ParameterType = EParameterType.ATK;
         EffectChance = 1F;
     }
 
-    public DefuffSkill(string name, float effectValue, EParameterType parameterType, float effectChance) : base(name, effectValue)
+    public DebuffSkill(string name, float effectValue, EParameterType parameterType, float effectChance) : base(name, effectValue)
     {
         ParameterType = parameterType;
         EffectChance = Math.Abs(effectChance);
