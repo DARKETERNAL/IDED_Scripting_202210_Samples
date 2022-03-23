@@ -1,7 +1,7 @@
 public abstract class Item
 {
     public string Name { get; protected set; }
-    public virtual float EffectValue { get; protected set; }
+    public abstract float EffectValue { get; protected set; }
 
     public Item()
     {

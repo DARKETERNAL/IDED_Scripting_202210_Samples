@@ -2,10 +2,12 @@ using System;
 
 public class BuffItem : Item
 {
+    private float effectValue;
+
     public override float EffectValue
     {
-        get => base.EffectValue;
-        protected set => base.EffectValue = Math.Min(1F, Math.Abs(value));
+        get => effectValue;
+        protected set => effectValue = Math.Min(1F, Math.Abs(value));
     }
 
     public EParameterType TargetParameter { get; private set; }

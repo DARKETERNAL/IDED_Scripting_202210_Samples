@@ -2,10 +2,12 @@ using System;
 
 public class HealthItem : Item
 {
+    private float effectValue;
+
     public override float EffectValue
     {
-        get => base.EffectValue;
-        protected set => base.EffectValue = Math.Max(1F, (float)Math.Round(value));
+        get => effectValue;
+        protected set => effectValue = Math.Max(1F, (float)Math.Round(value));
     }
 
     public HealthItem() : base()

@@ -14,6 +14,8 @@ public class Character // Nouns
 
     private Character target;
 
+    private IWeapon weapon;
+
     public int HP
     {
         get => baseHp;
@@ -22,7 +24,7 @@ public class Character // Nouns
 
     public float Atk
     {
-        get => baseAtk * (1 + atkFactor);
+        get => baseAtk * (1 + atkFactor) + (weapon == null ? 0 : weapon.Atk);
         private set => baseAtk = value;
     }
 
@@ -56,6 +58,14 @@ public class Character // Nouns
         Atk = atk;
         Def = def;
         Spec = spec;
+    }
+
+    public void EquipWeapon(IWeapon targetWeapon)
+    {
+        if (targetWeapon != null)
+        {
+            weapon = targetWeapon;
+        }
     }
 
     public void ApplyDamage(int delta)
@@ -131,7 +141,7 @@ public class Character // Nouns
         else if (skill is AttackSkill)
         {
             target.ApplyDamage((int)skill.EffectValue);
-            
+
             //target.ModifyHP(-(int)skill.EffectValue);
         }
         else if (skill is DebuffSkill)
