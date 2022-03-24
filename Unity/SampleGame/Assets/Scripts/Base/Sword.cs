@@ -1,13 +1,15 @@
-using UnityEngine;
-
 public class Sword : IWeapon
 {
-    //private 
+    public float Atk { get; private set; }
 
-    public float Atk { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-    public void PerformSpecialAttack()
+    public Sword(float atk = 0)
     {
-        //Whatever
+        atk = 0F;
+    }
+
+    public void PerformSpecialAttack(Character target)
+    {
+        target?.ApplyDamage((int)Atk * 3);
+        target?.ModifyParamFactor(EParameterType.DEF, 0.1F);
     }
 }

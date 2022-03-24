@@ -2,5 +2,5 @@ public interface IWeapon
 {
     float Atk { get; }
 
-    void PerformSpecialAttack();
+    void PerformSpecialAttack(Character target);
 }

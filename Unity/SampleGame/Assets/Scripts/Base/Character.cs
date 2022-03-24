@@ -68,6 +68,11 @@ public class Character // Nouns
         }
     }
 
+    public void PerformSpecialAttack(Character target)
+    {
+        weapon?.PerformSpecialAttack(target);
+    }
+
     public void ApplyDamage(int delta)
     {
         ModifyHP(-delta);
@@ -108,6 +113,7 @@ public class Character // Nouns
 
     public void BlockAttack()
     {
+        defFactor = 1F;
     }
 
     public void UseItem(Item item) // implicit cast
@@ -146,7 +152,7 @@ public class Character // Nouns
         }
         else if (skill is DebuffSkill)
         {
-            DebuffSkill defuffSkill = skill as DebuffSkill;
+            DebuffSkill defuffSkill = skill as DebuffSkill; // explicit cast
 
             float rollValue = (float)new Random(DateTime.Now.Millisecond).NextDouble();
 
