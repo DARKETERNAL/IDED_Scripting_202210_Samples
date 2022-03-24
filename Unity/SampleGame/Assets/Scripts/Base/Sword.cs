@@ -7,7 +7,7 @@ public class Sword : IWeapon
         atk = 0F;
     }
 
-    public void PerformSpecialAttack(Character target)
+    public virtual void PerformSpecialAttack(Character target)
     {
         target?.ApplyDamage((int)Atk * 3);
         target?.ModifyParamFactor(EParameterType.DEF, 0.1F);

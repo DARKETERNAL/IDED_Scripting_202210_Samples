@@ -10,6 +10,11 @@ public class CharacterBehavior : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        character = new Character(characterDefinition.Name, characterDefinition.Hp, characterDefinition.Atk, characterDefinition.Def, characterDefinition.Spec);
+        character = InstantiateCharacter(characterDefinition);
+    }
+
+    public static Character InstantiateCharacter(CharacterDefinition definition)
+    {
+        return new Character(definition.Name, definition.Hp, definition.Atk, definition.Def, definition.Spec);
     }
 }

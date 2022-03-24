@@ -68,9 +68,18 @@ public class Character // Nouns
         }
     }
 
-    public void PerformSpecialAttack(Character target)
+    public void PerformSpecialAttack()
     {
-        weapon?.PerformSpecialAttack(target);
+        //weapon?.PerformSpecialAttack(target);
+
+        if (weapon != null)
+        {
+            weapon.PerformSpecialAttack(target);
+        }
+        else
+        {
+            PerformAttack();
+        }
     }
 
     public void ApplyDamage(int delta)
